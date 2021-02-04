@@ -83,10 +83,6 @@
         {
             return value * 0.0833333333f;
         }
-        public static double FeetToMeter(this double value)
-        {
-            return value * 0.3048f;
-        }
         public static double ToBaseSetValue(double value, string set)
         {
             switch (set)

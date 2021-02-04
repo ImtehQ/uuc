@@ -13,6 +13,12 @@ namespace uuc
             return value.InnerConvert(format);
         }
 
+        /// <summary>
+        /// Does the logic to convert the data.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
         private static double InnerConvert(this double value, string format)
         {
             ///format (xy:xy) x = metric/ imperial (M/I) & y = Type (cm or mm or m)
@@ -27,7 +33,6 @@ namespace uuc
             UnitType fromType = UC_Modules.GetType(fromTypeStr);
             UnitType toType = UC_Modules.GetType(toTypeStr);
 
-            double baseValue = 0;
 
             if (fromType == UnitType.None)
             {
@@ -38,35 +43,15 @@ namespace uuc
                 //Error catch here, Type not found!
             }
 
+            //Convert the value to the base of its type
+            double baseValue = UC_Modules.GetBaseValue(fromType, value, fromSetStr);
 
-            if (fromType == UnitType.Metric)
-            {
-                //The value is from type Metric, we first need to convert it to base Metric
-                baseValue = UC_Metric.ToBaseSetValue(value, fromSetStr);
-            }
-            else if (fromType == UnitType.Imperial)
-            {
-                //The value is from type Imperial, we first need to convert it to base Imperial
-                baseValue = UC_Imperial.ToBaseSetValue(value, fromSetStr);
-            }
+            //Check to see if we need to convert the basevalue to a new type
+            double switchedValue = UC_Modules.SwitchType(fromType, toType, value);
 
-            //If it needs to become metric, we then have to check the from set
-            if (toType == UC_Modules.UnitType.Metric)
-            {
-                if (fromType == UC_Modules.UnitType.Imperial)
-                    return UC_Metric.ToSetValue(baseValue.FeetToMeter(), toSetStr);
+            //Convert the new base value to the target set.
+            return UC_Modules.GetSetValue(toType, switchedValue, toSetStr);
 
-                return UC_Metric.ToSetValue(baseValue, toSetStr);
-            }
-            else if (toType == UC_Modules.UnitType.Imperial)
-            {
-                if (fromType == UC_Modules.UnitType.Metric)
-                    return UC_Imperial.ToSetValue(baseValue.MeterToFeet(), toSetStr);
-
-                return UC_Imperial.ToSetValue(baseValue, toSetStr);
-            }
-
-            return -1;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace uuc
+﻿namespace uuc
 {
     public static class UC_Modules
     {

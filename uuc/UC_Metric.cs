@@ -135,7 +135,7 @@
         {
             return value * 0.000000000000000001f;
         }
-        public static double ToBaseSetValue(double value, string set)
+        public static double ToBaseValue(double value, string set)
         {
             switch (set)
             {

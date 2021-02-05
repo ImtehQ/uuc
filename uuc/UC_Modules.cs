@@ -1,36 +1,36 @@
-﻿namespace uuc
+﻿using System;
+using System.Reflection;
+
+namespace uuc
 {
     public static class UC_Modules
     {
         //Add new line and increese the first number of the array to add more types
-        private static string[,] UnitTypes = new string[3, 3] 
-        {{"M","Metric", "UC_Metric"},
-        {"I","Imperial","UC_Imperial"},
-        {"B","Bytes","UC_Bytes"} };
+        //0 = Tag, 1 = human readable name, 2 = Class name, 3 = found state
+        public static string[,] UnitTypes = new string[3, 4] 
+        {{"M","Metric", "UC_Metric", "0"},
+        {"I","Imperial","UC_Imperial", "0"},
+        {"B","Bytes","UC_Bytes", "0"} };
 
-        /// <summary>
-        /// Those are the Types to convert from and to
-        /// Make sure UnitTypes and UnitType have the same order
-        /// </summary>
-        public enum UnitType
-        {
-            Metric,
-            Imperial,
-            Bytes,
-            None // Make sure none is always last!
-        }
 
         public static void CheckModules()
         {
-
+            for (int i = 0; i < UnitTypes.GetLength(0); i++)
+            {
+                UnitTypes[i,3] = CheckExists("uuc." + UnitTypes[i, 2].ToString());
+            }
         }
 
-        private static bool Exists(string className)
+        private static string CheckExists(string className)
         {
             System.Type type = System.Type.GetType(className);
             if (type != null)
-                return true;
-            return false;
+                return "1";
+            return "0";
+        }
+        private static System.Type Exists(int index)
+        {
+            return System.Type.GetType("uuc." + UnitTypes[index,2].ToString());
         }
 
         /// <summary>
@@ -39,13 +39,13 @@
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static UnitType GetType(string key)
+        public static int GetType(string key)
         {
             for (int x = 0; x < UnitTypes.Length; x++)
             {
-                if (UnitTypes[x, 0] == key) { return (UnitType)x; }
+                if (UnitTypes[x, 0] == key) { return x; }
             }
-            return UnitType.None;
+            return -1;
         }
 
         /// <summary>
@@ -56,21 +56,12 @@
         /// <param name="value"></param>
         /// <param name="set"></param>
         /// <returns></returns>
-        public static double GetBaseValue(UnitType type, double value, string set)
+        public static double GetBaseValue(int type, double value, string set)
         {
-            switch (type)
-            {
-                case UnitType.Metric:
-                    return UC_Metric.ToBaseSetValue(value, set);
-                case UnitType.Imperial:
-                    return UC_Imperial.ToBaseSetValue(value, set);
-                case UnitType.Bytes:
-                    return UC_Bytes.ToBaseSetValue(value, set);
-                case UnitType.None:
-                    return -1;
-                default:
-                    return -1;
-            }
+            Type classType = Exists(type);
+            MethodInfo myMethod = classType.GetMethod("ToBaseValue", new Type[] { typeof(double), typeof(string) }, null);
+            Console.WriteLine(myMethod);
+            return (double)myMethod.Invoke(classType, new Object[] { value, set });
         }
 
         /// <summary>
@@ -81,21 +72,12 @@
         /// <param name="value"></param>
         /// <param name="set"></param>
         /// <returns></returns>
-        public static double GetSetValue(UnitType type, double value, string set)
+        public static double GetSetValue(int type, double value, string set)
         {
-            switch (type)
-            {
-                case UnitType.Metric:
-                    return UC_Metric.ToSetValue(value, set);
-                case UnitType.Imperial:
-                    return UC_Imperial.ToSetValue(value, set);
-                case UnitType.Bytes:
-                    return UC_Bytes.ToSetValue(value, set);
-                case UnitType.None:
-                    return -1;
-                default:
-                    return -1;
-            }
+            Type classType = Exists(type);
+            MethodInfo myMethod = classType.GetMethod("ToSetValue", new Type[] { typeof(double), typeof(string) }, null);
+            Console.WriteLine(myMethod);
+            return (double)myMethod.Invoke(classType, new Object[] { value, set });
         }
 
         /// <summary>
@@ -106,11 +88,11 @@
         /// <param name="to"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static double SwitchType(UnitType from, UnitType to, double value)
+        public static double SwitchType(int from, int to, double value)
         {
-            if (from == UnitType.Metric && to == UnitType.Imperial)
+            if (from == 0 && to == 1)             //Metric to imperial
                 return value * 3.280839895f;
-            if (from == UnitType.Imperial && to == UnitType.Metric)
+            if (from == 1 && to == 2)             //imperial to metric
                 return value / 3.280839895f;
             return value;
         }

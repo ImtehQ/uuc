@@ -15,17 +15,7 @@ namespace uuc
         {
             return value.InnerConvert(format);
         }
-        /// <summary>
-        /// DO NOT USE
-        /// Its faster but unchecked
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        public static double ConvertUnsafe(this double value, string format)
-        {
-            return value.InnerConvertFast(format);
-        }
+
         /// <summary>
         /// Does the logic to convert the data.
         /// </summary>
@@ -43,15 +33,14 @@ namespace uuc
             string toTypeStr = format.Substring(format.IndexOf(":") + 1, 1);
             string toSetStr = format.Substring(format.IndexOf(":") + 2, format.Length - (format.IndexOf(":") + 2));
 
-            UnitType fromType = UC_Modules.GetType(fromTypeStr);
-            UnitType toType = UC_Modules.GetType(toTypeStr);
+            int fromType = UC_Modules.GetType(fromTypeStr);
+            int toType = UC_Modules.GetType(toTypeStr);
 
-
-            if (fromType == UnitType.None)
+            if (fromType < 0)
             {
                 //Error catch here, Type not found!
             }
-            if (toType == UnitType.None)
+            if (toType < 0)
             {
                 //Error catch here, Type not found!
             }
@@ -64,35 +53,6 @@ namespace uuc
 
             //Convert the new base value to the target set.
             return UC_Modules.GetSetValue(toType, switchedValue, toSetStr);
-
-        }
-
-        /// <summary>
-        /// Faster but less useable way of doing it.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        private static double InnerConvertFast(this double value, string format)
-        {
-            format = format.Replace(" ", "");
-
-            UnitType fromType = UC_Modules.GetType(format.Substring(0, 1));
-            UnitType toType = UC_Modules.GetType(format.Substring(format.IndexOf(":") + 1, 1));
-
-            return UC_Modules.GetSetValue(
-                toType, 
-                UC_Modules.SwitchType(
-                    fromType, 
-                    toType, 
-                    UC_Modules.GetBaseValue(
-                        fromType, 
-                        value, 
-                        format.Substring(
-                            1, 
-                            format.IndexOf(":") - 1))), 
-                format.Substring(format.IndexOf(":") + 2, 
-                format.Length - (format.IndexOf(":") + 2)));
 
         }
     }

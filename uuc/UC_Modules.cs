@@ -3,10 +3,10 @@
     public static class UC_Modules
     {
         //Add new line and increese the first number of the array to add more types
-        private static string[,] UnitTypes = new string[3, 2] 
-        {{"M","Metric"},
-        {"I","Imperial"},
-        {"B","Bytes" } };
+        private static string[,] UnitTypes = new string[3, 3] 
+        {{"M","Metric", "UC_Metric"},
+        {"I","Imperial","UC_Imperial"},
+        {"B","Bytes","UC_Bytes"} };
 
         /// <summary>
         /// Those are the Types to convert from and to
@@ -18,6 +18,19 @@
             Imperial,
             Bytes,
             None // Make sure none is always last!
+        }
+
+        public static void CheckModules()
+        {
+
+        }
+
+        private static bool Exists(string className)
+        {
+            System.Type type = System.Type.GetType(className);
+            if (type != null)
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -98,7 +111,7 @@
             if (from == UnitType.Metric && to == UnitType.Imperial)
                 return value * 3.280839895f;
             if (from == UnitType.Imperial && to == UnitType.Metric)
-                return value * 3.280839895f;
+                return value / 3.280839895f;
             return value;
         }
     }

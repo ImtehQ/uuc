@@ -41,7 +41,7 @@ namespace uuc
             string fromSetStr = format.Substring(1, format.IndexOf(":") - 1);
 
             string toTypeStr = format.Substring(format.IndexOf(":") + 1, 1);
-            string toSetStr = format.Substring((format.IndexOf(":") + 2), (format.Length - (format.IndexOf(":") + 2)));
+            string toSetStr = format.Substring(format.IndexOf(":") + 2, format.Length - (format.IndexOf(":") + 2));
 
             UnitType fromType = UC_Modules.GetType(fromTypeStr);
             UnitType toType = UC_Modules.GetType(toTypeStr);
@@ -91,8 +91,8 @@ namespace uuc
                         format.Substring(
                             1, 
                             format.IndexOf(":") - 1))), 
-                format.Substring((format.IndexOf(":") + 2), 
-                (format.Length - (format.IndexOf(":") + 2))));
+                format.Substring(format.IndexOf(":") + 2, 
+                format.Length - (format.IndexOf(":") + 2)));
 
         }
     }

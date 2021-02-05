@@ -45,13 +45,13 @@ namespace uuc
                 //Error catch here, Type not found!
             }
 
-            //Convert the value to the base of its type
+            //1, Convert the value to the base of its type
             double baseValue = UC_Modules.GetBaseValue(fromType, value, fromSetStr);
 
-            //Check to see if we need to convert the basevalue to a new type
+            //2, Check to see if we need to convert the basevalue to a new type
             double switchedValue = UC_Modules.SwitchType(fromType, toType, baseValue);
 
-            //Convert the new base value to the target set.
+            //3, Convert the new base value to the target set.
             return UC_Modules.GetSetValue(toType, switchedValue, toSetStr);
 
         }

@@ -13,6 +13,10 @@ namespace uuc
         {"B","Bytes","UC_Bytes", "0"} };
 
 
+        /// <summary>
+        /// Updates the UnitTypes found state.
+        /// Is not needed to be able to use the converter
+        /// </summary>
         public static void CheckModules()
         {
             for (int i = 0; i < UnitTypes.GetLength(0); i++)
@@ -21,6 +25,11 @@ namespace uuc
             }
         }
 
+        /// <summary>
+        /// Returns 1 if found or 0 is not found
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
         private static string CheckExists(string className)
         {
             System.Type type = System.Type.GetType(className);
@@ -28,6 +37,12 @@ namespace uuc
                 return "1";
             return "0";
         }
+
+        /// <summary>
+        /// Will return the type if found
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         private static System.Type Exists(int index)
         {
             return System.Type.GetType("uuc." + UnitTypes[index,2].ToString());

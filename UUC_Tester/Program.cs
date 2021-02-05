@@ -20,7 +20,6 @@ namespace UUC_Tester
                     Console.WriteLine(UC_Modules.UnitTypes[i, 1] + " Not found.");
             }
 
-
             Console.ReadLine();
         }
     }

@@ -12,7 +12,6 @@ namespace uuc
         {"I","Imperial","UC_Imperial", "0"},
         {"B","Bytes","UC_Bytes", "0"} };
 
-
         /// <summary>
         /// Updates the UnitTypes found state.
         /// Is not needed to be able to use the converter

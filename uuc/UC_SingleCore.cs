@@ -13,9 +13,9 @@
         {
             if (type == 0) // or UnitTypes[type,1] == Metric
                 return UCSC_Metric.ToBaseValue(value, set);
-            if (type == 0) // or UnitTypes[type,1] == Imperial
+            if (type == 1) // or UnitTypes[type,1] == Imperial
                 return UCSC_Imperial.ToBaseValue(value, set);
-            if (type == 0) // or UnitTypes[type,1] == Bytes
+            if (type == 2) // or UnitTypes[type,1] == Bytes
                 return UCSC_Bytes.ToBaseValue(value, set);
             return -1;
         }
@@ -24,9 +24,9 @@
         {
             if (type == 0) // or UnitTypes[type,1] == Metric
                 return UCSC_Metric.ToSetValue(value, set);
-            if (type == 0) // or UnitTypes[type,1] == Imperial
+            if (type == 1) // or UnitTypes[type,1] == Imperial
                 return UCSC_Imperial.ToSetValue(value, set);
-            if (type == 0) // or UnitTypes[type,1] == Bytes
+            if (type == 2) // or UnitTypes[type,1] == Bytes
                 return UCSC_Bytes.ToSetValue(value, set);
             return -1;
         }
